@@ -94,7 +94,7 @@ Now you will be asked to (due to the **-p** option provided) :
 ````
 Enter page no. to start from :
 ````
-Here, enter the _PAGE-NUMBER_ with which you want to save files (explained in the **-p** option section). `3` for this example.
+Here, enter the _PAGE-NUMBER_ from which you want the download to start from (explained in the **-p** option section). `3` for this example.
 
 Now you will be asked to :
 ````
