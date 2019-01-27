@@ -147,13 +147,11 @@ That is it. Now the images will be downloaded to the current directory.
 ## INSTALLING<a name="INSTALLING"></a>
 To install, clone or download this repository and run the following command from the directory :
 ````
-$ chmod +x install
 $ sudo ./install
 ````
 
 If you want to uninstall, use :
 ````
-$ chmod +x uninstall
 $ sudo ./uninstall
 ````
 
