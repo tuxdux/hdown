@@ -1,10 +1,6 @@
 # hdown
 
-<hr style="height : 1px">
-<div style="background-color : #161416;">
-![](example.gif)
-</div>
-<hr style="height : 1px">
+![Example](example.gif)
 
 [NAME](#NAME)  
 [SYNOPSIS](#SYNOPSIS)  
@@ -28,11 +24,9 @@ hdown — A simple tool to download images from your favorite doujinshi sites.
 
 ## DESCRIPTION<a name="DESCRIPTION"></a>
 
-<center>
 ````
 This is a small bash script. Nothing extraordinary.
 ````
-</center>
 
 hdown is a downloading tool that uses **wget** to download images from a doujinshi site. This tool can also download images from any website that uses a certain pattern to store their images. It does not take any arguments since it reads all the required information via the standard input with prompts. (Providing a URL is easier that way and it does not get stored in the history.)
 
@@ -50,35 +44,28 @@ You will have to download (give links to the images for) each chapter manually.
 
 ## OPTIONS<a name="OPTIONS"></a>
 
-<center>
 ````
 This program does not support long options.
 ````
-</center>
 
 **-h**
-<hr style="height : 1px">
 
 Show summary of manual.
 
 **-p**
-<hr style="height : 1px">
 
 Start downloading from a custom page number. The <u>PAGE-NUMBER</u> is also taken via the standard input. If **-l** or **-e** is provided, this will have no effect other than the name of downloaded files changing. So use this option with **-l** or **-e** if you want to start naming the files from a certain number. Note that if you give 10 for <u>PAGE-NUMBER</u> and then 10 for <u>PAGES</u>, the images will be downloaded till page 19\. The last page is calculated as : <u>PAGE-NUMBER</u> + <u>PAGES</u> - 1
 
 **-n**
-<hr style="height : 1px">
 
 Save the files with a custom name. The <u>NAME</u> is also taken via the standard input. The files will be saved as "<u>NAME PAGE</u>.jpg" (or png, depending on the extension). So, if you provide `Test` for the <u>NAME</u>, the first image will be saved as `Test 1.jpg`, the second image will be saved as `Test 2.jpg` and so on.
 
 **-l**
-<hr style="height : 1px">
 
 Download images from `luscious.net`. If this option is provided, the program, instead of the usual <u>PATTERN</u> and <u>PADDING</u>, asks for the <u>URL</u> to the first page (the page from where you want the download to start from). So, if you want to download pages 8-10, you need to provide the <u>URL</u> to the 8th page and 3 for <u>PAGES</u> (8,9,10 — 3 pages). If you want the files named from 8 onwards as well, you **need** to provide the **-p** option.  
 **Note that the** <u>URL</u> **is the actual URL to the page and not the URL to the image.**
 
 **-e**
-<hr style="height : 1px">
 
 Download images from `e-hentai.org`. If this option is provided, the program, instead of the usual <u>PATTERN</u> and <u>PADDING</u>, asks for the <u>URL</u> to the first page (the page from where you want the download to start from). So, if you want to download pages 8-10, you need to provide the <u>URL</u> to the 8th page and 3 for <u>PAGES</u> (8,9,10 — 3 pages). If you want the files named from 8 onwards as well, you **need** to provide the **-p** option.  
 **Note that the** <u>URL</u> **is the actual URL to the page and not the URL to the image.**
