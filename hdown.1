@@ -1,0 +1,137 @@
+.\" Disable justification, align text to left only
+.ad l
+.\" ------------------------------------------------------
+.TH "HDOWN" "1" "January 7th 2019" "version 1.0.3" "HDOWN"
+.\" ------------------------------------------------------
+
+.SH NAME
+hdown \(em A simple tool to download images from your favorite doujinshi sites.
+
+\fBWARNING\fR : This program can only download JPG or PNG images.
+
+.SH SYNOPSIS
+\fBhdown\fR [\fIOPTIONS\fR]
+
+.SH DESCRIPTION
+hdown is a downloading tool that uses \fBwget\fR(1) to download images from a doujinshi site. This tool can also download images from any website that uses a certain pattern to store their images. It does not take any arguments since it reads all the required information via the standard input with prompts. (Providing a URL is easier that way and it does not get stored in the history.)
+
+\fBEXAMPLE\fR : If a site stores their images as : https://www.some-site.com/images/img001.jpg, and there are 25 images at the site, all you need to provide the program is the \fIPATTERN\fR, \fIPADDING\fR and \fIPAGES\fR.
+
+\fIPATTERN\fR \(em The url till just where the number starts. In the above example, it would be https://www.some-site.com/images/img. If there is a slash before the number, you \fBmust\fR include it in the pattern.
+
+\fIPADDING\fR \(em The number of digits in the url of the images. In the above example it would be 3, since the index of the images is stored as 001, 002, 011 and similar. If the number of digits is not fixed, like if the numbers are 1, 2, 11 and similar, you need to provide 0.
+
+\fIPAGES\fR   \(em The number of pages to download \fBstarting from\fR the beginning page. Without the \fB\-p\fR, \fB\-l\fR or \fB\-e\fR options, the images are downloaded from page 1. So if you provide 10 for \fIPAGES\fR, the images will be downloaded till page 10.
+
+You will have to download (give links to the images for) each chapter manually.
+
+\fBWARNING\fR : This program will not work if the website has the cloudflare DDoS protection turned on.
+
+.SH OPTIONS
+.TP
+\fB\-h\fR
+Show summary of manual.
+.TP
+\fB\-p\fR
+Start downloading from a custom page number. The \fIPAGE\-NUMBER\fR is also taken via the standard input. If \fB\-l\fR or \fB\-e\fR is provided, this will have no effect other than the name of downloaded files changing. So use this option with \fB\-l\fR or \fB\-e\fR if you want to start naming the files from a certain number. Note that if you give 10 for \fIPAGE-NUMBER\fR and then 10 for \fIPAGES\fR, the images will be downloaded till page 19. The last page is calculated as : \fIPAGE\-NUMBER\fR \+ \fIPAGES\fR \- 1
+.TP
+\fB\-n\fR
+Save the files with a custom name. The \fINAME\fR is also taken via the standard input. The files will be saved as "\fINAME PAGE\fR.jpg" (or png, depending on the extension). So, if you provide "Test" for the \fINAME\fR, the first image will be saved as "Test 1.jpg", the second image will be saved as "Test 2.jpg" and so on.
+.TP
+\fB\-l\fR
+Download images from luscious.net. If this option is provided, the program, instead of the usual \fIPATTERN\fR and \fIPADDING\fR, asks for the \fIURL\fR to the first page (the page from where you want the download to start from). So, if you want to download pages 8\-10, you need to provide the \fIURL\fR to the 8th page and 3 for \fIPAGES\fR (8,9,10 \(em 3 pages). If you want the files named from 8 onwards as well, you \fBneed\fR to provide the \fB\-p\fR option.
+
+\fBNote that the \fIURL\fB is the actual URL to the page and not the URL to the image.\fR
+.TP
+\fB\-e\fR
+Download images from e-hentai.org. If this option is provided, the program, instead of the usual \fIPATTERN\fR and \fIPADDING\fR, asks for the \fIURL\fR to the first page (the page from where you want the download to start from). So, if you want to download pages 8\-10, you need to provide the \fIURL\fR to the 8th page and 3 for \fIPAGES\fR (8,9,10 \(em 3 pages). If you want the files named from 8 onwards as well, you \fBneed\fR to provide the \fB\-p\fR option.
+
+\fBNote that the \fIURL\fB is the actual URL to the page and not the URL to the image.\fR
+
+.TP
+\fBWARNING\fR : \fB\-l\fR and \fB\-e\fR cannot be used together. The first one provided will be considered.
+
+.SH USAGE
+.PP
+The various options can be combined, except for \fB\-l\fR and \fB\-e\fR together.
+
+.\" EXAMPLE 1
+\fBEXAMPLE 1\fR : Suppose you want to download 25 images starting from https://www.some-site.com/123456/img0003.jpg (this would mean downloading pages 3\-27) and you want the files named as Test.
+.RS 12
+.PP
+You invoke hdown as :
+.RS 4
+$ hdown \-np
+.RE
+.PP
+Now you will be asked to (due to the \fB\-n\fR option provided) :
+.RS 4
+Enter custom file name :
+.RE
+.br
+Here, enter the \fINAME\fR with which you want to save files (explained in the \fB\-n\fR option section). 'Test' for this example.
+.PP
+Now you will be asked to (due to the \fB\-p\fR option provided) :
+.RS 4
+Enter page no. to start from :
+.RE
+.br
+Here, enter the \fIPAGE-NUMBER\fR with which you want to save files (explained in the \fB\-p\fR option section). '3' for this example.
+.PP
+Now you will be asked to :
+.RS 4
+Enter url pattern :
+.RE
+.br
+Here, enter the \fIPATTERN\fR as explained in the \fBDESCRIPTION\fR. 'https://www.some-site.com/123456/img' for this example.
+.PP
+Now you will be asked to :
+.RS 4
+Enter padding of index :
+.RE
+.br
+Here, enter the \fIPADDING\fR as explained in the \fBDESCRIPTION\fR. '4' for this example.
+.PP
+Now you will be asked to :
+.RS 4
+Enter number of pages :
+.RE
+.br
+Here, enter the \fIPAGES\fR as explained in the \fBDESCRIPTION\fR. '25' for this example.
+.PP
+That is it. Now the images will be downloaded to the current directory.
+.RE
+ 
+.\" EXAMPLE 2
+\fBEXAMPLE 2\fR : Suppose you want to download first 10 images of a particular doujinshi from luscious.net.
+.RS 12
+.PP
+You invoke hdown as :
+.RS 4
+$ hdown \-l
+.RE
+.PP
+Now you will be asked to :
+.RS 4
+Enter url to the beginning page :
+.RE
+.br
+Here, enter the \fIURL\fR with which you want to save files (explained in the \fB\-l\fR option section).
+.PP
+Now you will be asked to :
+.RS 4
+Enter number of pages :
+.RE
+.br
+Here, enter the \fIPAGES\fR as explained in the \fBDESCRIPTION\fR. '10' for this example.
+.PP
+That is it. Now the images will be downloaded to the current directory.
+.RE
+
+.SH BUGS
+1) The program still creates empty files even if the download failed (this is a problem in \fBwget\fR(1) actually).
+
+2) The program gets stuck if the server does not respond. This is often encountered when downloading from e-hentai.org.
+
+.SH AUTHOR
+Written by Adnan Aslam (tuxdux) <adnanasl@protonmail.com>.

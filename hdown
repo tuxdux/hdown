@@ -1,0 +1,228 @@
+#! /usr/bin/env bash
+
+# UI formatting variables
+YELLOW='\033[0;33m'
+GREEN='\033[0;32m'
+
+stop () {
+	rm -f "$PWD/.page.html"
+	rm -f "$PWD/.wget.out"
+}
+
+# This line is executed when the user terminates the program with ^C
+trap stop EXIT
+
+# The custom file name given by the user
+name=""
+# The number of page to start downloading from
+num=1
+
+luscious=false
+ehen=false
+pset=false
+nset=false
+
+print_usage () {
+	cat <<- HEREDOC
+	------------------------------------------------------------------------------------------------------
+	[I] Usage       : hdown [\$OPTIONS]
+	------------------------------------------------------------------------------------------------------
+
+	------------------------------------------------------------------------------------------------------
+	[II] You will be asked for [url], [padding] and [pages].
+	     Unless using -l or -e. For them, see [III] below.
+	------------------------------------------------------------------------------------------------------
+	[#] [url]       : If the url to the images is https://www.some-site.com/images/123456/img0001.jpg
+	                  you will provide the part before the number (in this case, 0001), that is :
+	                  https://www.some-site.com/images/123456/img
+	                  [-] Notice that "hcdn" is also included.
+	                  [-] If there is a slash before the number, you MUST include it.
+	[#] [padding]   : This is the number of characters in the index of image. See, in above example, 0001
+	                  there are 4 characters. So provide 4. The 11th image will have index 0011. If there
+	                  is no padding, i.e, the numbers are like 1 and 11, provide 0.
+	[#] [pages]     : The total number of pages to download after the beginning page.
+	------------------------------------------------------------------------------------------------------
+	[!] Also, keep in mind you have to download each chapter manually.
+	------------------------------------------------------------------------------------------------------
+
+	------------------------------------------------------------------------------------------------------
+	[III] Options :
+	------------------------------------------------------------------------------------------------------
+	-h              : Print this help message.
+	-p              : Start downloading from a custom page number.
+	-n              : Save files with custom names.
+	-l              : Download a doujinshi from luscious.net.
+	                  Now you will be asked for the url. Just provide the url to the first page of the
+	                  doujinshi. Then you will have to provide the number of pages you want.
+	-e              : Download a doujinshi from e-hentai.org.
+	                  Now you will be asked for the url. Just provide the url to the first page of the
+	                  doujinshi. Then you will have to provide the number of pages you want.
+	------------------------------------------------------------------------------------------------------
+	WARNING         : -l and -e cannot be used together. The first one provided will be considered.
+	------------------------------------------------------------------------------------------------------
+	HEREDOC
+}
+
+ehen () {
+	read -p "Enter url to the beginning page : " url
+	read -p "Enter number of pages : " pages
+	if ! [[ "$pages" =~ ^[0-9]+$ ]]
+	then
+		echo "[!] INVALID PAGES : $pages"
+		print_usage
+		exit 1
+	fi
+	pages=$(( $num + $pages ))
+	for (( i=$num; i<$pages; i++ ))
+	do
+		echo -ne "\r${YELLOW}Downloading : Page $i"
+		wget --quiet -O .page.html "$url"
+		image=$(grep -oE "id=\"img\"\ssrc=\S*" .page.html | grep -oE "http:\S*")
+		url=$(grep -oE '<a\sid="next"\s\S*\s\S*\s\S*\s\S*>' .page.html | head -1 | grep -oE "https.*\"")
+		url=${url%\"}
+		if [ "$name" == "" ]
+		then
+			wget --quiet -O "$i.jpg" "$image"
+		else
+			wget --quiet -O "$name $i.jpg" "$image"
+		fi
+	done
+	rm -f .page.html
+	echo -e "\r${GREEN}[#] Download complete!"
+}
+
+luscious () {
+	read -p "Enter url to the beginning page : " url
+	read -p "Enter number of pages : " pages
+	if ! [[ "$pages" =~ ^[0-9]+$ ]]
+	then
+		echo "[!] INVALID PAGES : $pages"
+		print_usage
+		exit 1
+	fi
+	pages=$(( $num + $pages ))
+	for (( i=$num; i<$pages; i++ ))
+	do
+		echo -ne "\r${YELLOW}Downloading : Page $i"
+		wget --quiet -O .page.html "$url"
+		image=$(grep -A3 "id=\"single_pic" .page.html | grep "https" | grep -oE "https.*\.(jpg|png)")
+		if [ "$image" == "" ]
+		then
+			image=$(grep 'img' .page.html | grep -i 'Image' | grep -oE "https:.*\.(jpg|png)" | head -1)
+		fi
+		ext=$(echo "$image" | rev | cut -f1 -d'.' | rev)
+		if [ "$name" == "" ]
+		then
+			wget --quiet -O "$i.$ext" "$image"
+		else
+			wget --quiet -O "$name $i.$ext" "$image"
+		fi
+		url=$(grep '</a>' .page.html | grep -i 'Next' | grep -oE "pictures.*\"")
+		url="https://luscious.net/$url"
+	done
+	rm -f .page.html
+	echo -e "\r${GREEN}[#] Download complete!"
+}
+
+# Do note the first colon. This is to disable the error handling done by 
+# getopts, and without this, the $OPTARG in case \?) will NOT work
+while getopts ":hpnle" option
+do
+	case $option in
+		h) print_usage && exit 0 ;;
+		p) pset=true ;;
+		n) nset=true ;;
+		l) if [ "$ehen" = false ]
+		   then
+		   	luscious=true
+		   else
+		   	echo "[!] -l cannot be used with -e. Proceeding with -e"
+		   fi ;;
+		e) if [ "$luscious" = false ]
+		   then
+		   	ehen=true
+		   else
+		   	echo "[!] -e cannot be used with -l. Proceeding with -l"
+		   fi ;;
+		\?) echo "[!] INVALID OPTION : -$OPTARG"
+		   print_usage
+		   exit 0;;
+	esac
+done
+
+if [ "$nset" = true ]
+then
+	read -p "Enter custom file name : " name
+fi
+
+if [ "$pset" = true ]
+then
+	read -p "Enter page no. to start from : " num
+	if ! [[ "$num" =~ ^[0-9]+$ ]]
+	then
+		echo "[!] INVALID PAGE NUMBER : $num"
+		exit 1
+	fi
+fi
+
+if [ "$luscious" = true ]
+then
+	luscious
+	exit 0
+fi
+
+if [ "$ehen" = true ]
+then
+	ehen
+	exit 0
+fi
+
+read -p "Enter url pattern : " url
+read -p "Enter padding of index : " padding
+read -p "Enter number of pages : " pages
+
+# If the padding provided is not a single digit integer
+if ! [[ "$padding" =~ ^[0-9]$ ]]
+then
+	echo "[!] INVALID PADDING : $padding"
+	print_usage
+	exit 1
+fi
+
+# If the number of pages provided is not a valid integer
+if ! [[ "$pages" =~ ^[0-9]+$ ]]
+then
+	echo "[!] INVALID PAGES : $pages"
+	print_usage
+	exit 1
+fi
+
+padding="%0${padding}d"
+
+# Fix the pages
+pages=$(( $num + $pages ))
+for (( i=$num; i<$pages; i++ ))
+do
+	echo -ne "\r${YELLOW}Downloading : Page $i"
+	# This command pads zeroes before numbers to make them exactly of $padding characters
+	# Read : https://stackoverflow.com/a/8789815
+	printf -v page "$padding" $i
+	image="$url$page.jpg"
+	if [ "$name" == "" ]
+	then
+		filename="$page"
+	else
+		filename="$name $i"
+	fi
+	# Note the &> This redirects all output (from every channel)
+	wget --output-document="$filename.jpg" "$image" &> .wget.out
+	error=$(grep -oi "ERROR" .wget.out)
+	if [ "$error" != "" ]
+	then
+		rm "$filename.jpg"
+		image="$url$page.png"
+		wget --quiet --output-document="$filename.png" "$image"
+	fi
+	rm -f .wget.out
+done
+echo -e "\r${GREEN}[#] Download complete!"

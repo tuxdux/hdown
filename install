@@ -1,0 +1,3 @@
+#! /bin/sh
+cp ./hdown /usr/bin
+cp ./hdown.1 /usr/local/man/man1
