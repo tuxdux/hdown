@@ -105,11 +105,7 @@ luscious () {
 	do
 		echo -ne "\r${YELLOW}Downloading : Page $i"
 		wget --quiet -O .page.html "$url"
-		image=$(grep -A3 "id=\"single_pic" .page.html | grep "https" | grep -oE "https.*\.(jpg|png)")
-		if [ "$image" == "" ]
-		then
-			image=$(grep 'img' .page.html | grep -i 'Image' | grep -oE "https:.*\.(jpg|png)" | head -1)
-		fi
+		image=$(grep -i "\"icon-download\"" .page.html | grep -oE "http.*\.(jpg|png)")
 		ext=$(echo "$image" | rev | cut -f1 -d'.' | rev)
 		if [ "$name" == "" ]
 		then
