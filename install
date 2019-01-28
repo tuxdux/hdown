@@ -1,4 +1,4 @@
 #! /bin/sh
 chmod +x hdown
 cp ./hdown /usr/bin
-cp ./hdown.1 /usr/local/man/man1
+cp ./hdown.1 /usr/share/man/man1
