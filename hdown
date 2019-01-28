@@ -3,6 +3,7 @@
 # UI formatting variables
 YELLOW='\033[0;33m'
 GREEN='\033[0;32m'
+NOCOLOR='\033[0m'
 
 stop () {
 	rm -f "$PWD/.page.html"
@@ -75,7 +76,7 @@ ehen () {
 	pages=$(( $num + $pages ))
 	for (( i=$num; i<$pages; i++ ))
 	do
-		echo -ne "\r${YELLOW}Downloading : Page $i"
+		echo -ne "\r${YELLOW}Downloading : Page $i${NOCOLOR}"
 		wget --quiet -O .page.html "$url"
 		image=$(grep -oE "id=\"img\"\ssrc=\S*" .page.html | grep -oE "http:\S*")
 		url=$(grep -oE '<a\sid="next"\s\S*\s\S*\s\S*\s\S*>' .page.html | head -1 | grep -oE "https.*\"")
@@ -88,7 +89,7 @@ ehen () {
 		fi
 	done
 	rm -f .page.html
-	echo -e "\r${GREEN}[#] Download complete!"
+	echo -e "\r${GREEN}[#] Download complete!${NOCOLOR}"
 }
 
 luscious () {
@@ -103,7 +104,7 @@ luscious () {
 	pages=$(( $num + $pages ))
 	for (( i=$num; i<$pages; i++ ))
 	do
-		echo -ne "\r${YELLOW}Downloading : Page $i"
+		echo -ne "\r${YELLOW}Downloading : Page $i${NOCOLOR}"
 		wget --quiet -O .page.html "$url"
 		image=$(grep -i "\"icon-download\"" .page.html | grep -oE "http.*\.(jpg|png)")
 		ext=$(echo "$image" | rev | cut -f1 -d'.' | rev)
@@ -117,7 +118,7 @@ luscious () {
 		url="https://luscious.net/$url"
 	done
 	rm -f .page.html
-	echo -e "\r${GREEN}[#] Download complete!"
+	echo -e "\r${GREEN}[#] Download complete!${NOCOLOR}"
 }
 
 # Do note the first colon. This is to disable the error handling done by 
@@ -199,7 +200,7 @@ padding="%0${padding}d"
 pages=$(( $num + $pages ))
 for (( i=$num; i<$pages; i++ ))
 do
-	echo -ne "\r${YELLOW}Downloading : Page $i"
+	echo -ne "\r${YELLOW}Downloading : Page $i${NOCOLOR}"
 	# This command pads zeroes before numbers to make them exactly of $padding characters
 	# Read : https://stackoverflow.com/a/8789815
 	printf -v page "$padding" $i
@@ -221,4 +222,4 @@ do
 	fi
 	rm -f .wget.out
 done
-echo -e "\r${GREEN}[#] Download complete!"
+echo -e "\r${GREEN}[#] Download complete!${NOCOLOR}"
