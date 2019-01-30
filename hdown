@@ -3,32 +3,38 @@
 # UI formatting variables
 YELLOW='\033[0;33m'
 GREEN='\033[0;32m'
-NOCOLOR='\033[0m'
 
 stop () {
-	rm -f "$PWD/.page.html"
-	rm -f "$PWD/.wget.out"
+	cd "$INITIALDIR"
+	rm -f ./.page.html
+	rm -f ./.wget.out
+	rm -f ./RUN-*/.text
 }
 
 # This line is executed when the user terminates the program with ^C
 trap stop EXIT
 
+# The directory from which the program was invoked
+INITIALDIR="$PWD"
 # The custom file name given by the user
 name=""
 # The number of page to start downloading from
 num=1
+# The file to read from
+file=""
 
 luscious=false
 ehen=false
 pset=false
 nset=false
+fset=false
 
 print_usage () {
 	cat <<- HEREDOC
 	------------------------------------------------------------------------------------------------------
 	[I] Usage       : hdown [\$OPTIONS]
 	------------------------------------------------------------------------------------------------------
-
+	
 	------------------------------------------------------------------------------------------------------
 	[II] You will be asked for [url], [padding] and [pages].
 	     Unless using -l or -e. For them, see [III] below.
@@ -58,6 +64,12 @@ print_usage () {
 	-e              : Download a doujinshi from e-hentai.org.
 	                  Now you will be asked for the url. Just provide the url to the first page of the
 	                  doujinshi. Then you will have to provide the number of pages you want.
+	-f              : Read data from file. The file should be in the following format :
+	                  OPTIONS
+	                  DATA
+	                  BLANK LINE
+	                  OPTIONS
+	                  DATA
 	------------------------------------------------------------------------------------------------------
 	WARNING         : -l and -e cannot be used together. The first one provided will be considered.
 	------------------------------------------------------------------------------------------------------
@@ -76,12 +88,12 @@ ehen () {
 	pages=$(( $num + $pages ))
 	for (( i=$num; i<$pages; i++ ))
 	do
-		echo -ne "\r${YELLOW}Downloading : Page $i${NOCOLOR}"
+		echo -ne "\r${YELLOW}Downloading : Page $i"
 		wget --quiet -O .page.html "$url"
 		image=$(grep -oE "id=\"img\"\ssrc=\S*" .page.html | grep -oE "http:\S*")
 		url=$(grep -oE '<a\sid="next"\s\S*\s\S*\s\S*\s\S*>' .page.html | head -1 | grep -oE "https.*\"")
 		url=${url%\"}
-		if [ "$name" == "" ]
+		if [ -z "$name" ]
 		then
 			wget --quiet -O "$i.jpg" "$image"
 		else
@@ -89,12 +101,14 @@ ehen () {
 		fi
 	done
 	rm -f .page.html
-	echo -e "\r${GREEN}[#] Download complete!${NOCOLOR}"
+	echo -e "\r${GREEN}[#] Download complete!"
 }
 
 luscious () {
 	read -p "Enter url to the beginning page : " url
 	read -p "Enter number of pages : " pages
+	echo "$url"
+	echo "$pages"
 	if ! [[ "$pages" =~ ^[0-9]+$ ]]
 	then
 		echo "[!] INVALID PAGES : $pages"
@@ -104,11 +118,15 @@ luscious () {
 	pages=$(( $num + $pages ))
 	for (( i=$num; i<$pages; i++ ))
 	do
-		echo -ne "\r${YELLOW}Downloading : Page $i${NOCOLOR}"
+		echo -ne "\r${YELLOW}Downloading : Page $i"
 		wget --quiet -O .page.html "$url"
 		image=$(grep -i "\"icon-download\"" .page.html | grep -oE "http.*\.(jpg|png)")
-		ext=$(echo "$image" | rev | cut -f1 -d'.' | rev)
-		if [ "$name" == "" ]
+		ext=${image##*\.}
+		if [ -z "$ext" ]
+		then
+			ext="error"
+		fi
+		if [ -z "$name" ]
 		then
 			wget --quiet -O "$i.$ext" "$image"
 		else
@@ -118,12 +136,48 @@ luscious () {
 		url="https://luscious.net/$url"
 	done
 	rm -f .page.html
-	echo -e "\r${GREEN}[#] Download complete!${NOCOLOR}"
+	echo -e "\r${GREEN}[#] Download complete!"
+}
+
+readfile () {
+	run=1
+	while read -r line
+	do
+		mkdir -p "RUN-$run"
+		cd "RUN-$run"
+		touch .text
+		if ! [[ "$line" =~ ^\-.*$ ]]
+		then
+			echo "$line" >> .text
+		fi
+		while true
+		do
+			read -r nextline
+			# remove leading whitespace characters
+			nextline="${nextline#"${nextline%%[![:space:]]*}"}"
+			# remove trailing whitespace characters
+			nextline="${nextline%"${nextline##*[![:space:]]}"}"
+			if [ -z "$nextline" ]
+			then
+				break
+			fi
+			echo "$nextline" >> .text
+		done
+		if [[ "$line" =~ ^\-.*$ ]]
+		then
+			cat .text | hdown "$line"
+		else
+			cat .text | hdown
+		fi
+		rm .text
+		run=$(( run + 1 ))
+		cd "$INITIALDIR"
+	done < "$file"
 }
 
 # Do note the first colon. This is to disable the error handling done by 
 # getopts, and without this, the $OPTARG in case \?) will NOT work
-while getopts ":hpnle" option
+while getopts ":hpnlef" option
 do
 	case $option in
 		h) print_usage && exit 0 ;;
@@ -141,11 +195,33 @@ do
 		   else
 		   	echo "[!] -e cannot be used with -l. Proceeding with -l"
 		   fi ;;
+		f) fset=true ;;
 		\?) echo "[!] INVALID OPTION : -$OPTARG"
 		   print_usage
 		   exit 0;;
 	esac
 done
+
+if [ "$fset" = true ]
+then
+	read -p "Enter name of file to read from : " file
+	if [[ "$file" =~ ^\~.*$ ]]
+	then
+		file=${file#\~}
+		file="$HOME$file"
+	elif [[ "$file" =~ ^\..*$ ]]
+	then
+		file=${file$\.}
+		file="$PWD$file"
+	fi
+	if ! [ -f "$file" ]
+	then
+		echo "[!] No such file or directory : $file"
+		exit 1
+	fi
+	readfile
+	exit 0
+fi
 
 if [ "$nset" = true ]
 then
@@ -200,12 +276,12 @@ padding="%0${padding}d"
 pages=$(( $num + $pages ))
 for (( i=$num; i<$pages; i++ ))
 do
-	echo -ne "\r${YELLOW}Downloading : Page $i${NOCOLOR}"
+	echo -ne "\r${YELLOW}Downloading : Page $i"
 	# This command pads zeroes before numbers to make them exactly of $padding characters
 	# Read : https://stackoverflow.com/a/8789815
 	printf -v page "$padding" $i
 	image="$url$page.jpg"
-	if [ "$name" == "" ]
+	if [ -z "$name" ]
 	then
 		filename="$page"
 	else
@@ -222,4 +298,4 @@ do
 	fi
 	rm -f .wget.out
 done
-echo -e "\r${GREEN}[#] Download complete!${NOCOLOR}"
+echo -e "\r${GREEN}[#] Download complete!"

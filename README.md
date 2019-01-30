@@ -70,6 +70,43 @@ Download images from `luscious.net`. If this option is provided, the program, in
 Download images from `e-hentai.org`. If this option is provided, the program, instead of the usual _PATTERN_ and _PADDING_, asks for the _URL_ to the first page (the page from where you want the download to start from). So, if you want to download pages 8-10, you need to provide the _URL_ to the 8th page and 3 for _PAGES_ (8,9,10 — 3 pages). If you want the files named from 8 onwards as well, you **need** to provide the **-p** option.  
 **Note that the** _URL_ **is the actual URL to the page and not the URL to the image.**
 
+**-f**
+
+Read the required data from a file. If this option is provided, the program simply asks for the path to the file which has data stored in the following form (_FILE_ is also taken via standard input with prompt) :
+````
+OPTIONS
+DATA
+BLANK LINE
+OPTIONS
+DATA
+````
+
+The only problem would be to maintain the order of data. First, custom file name (if using **-n**), then custom page number (if using **-p**) and then everything else, i.e, the usual order in which the program requests the data. So a perfect example of _FILE_ would be :
+````
+-np
+Test
+10
+https://www.some-site.com/images/img
+4
+11
+
+https://www.some-other-site.com/img
+3
+20
+
+-e
+https://e-hentai.org/proceeding-long-url
+20
+````
+
+* This would run the program first for _NAME_=`Test`, _PAGE-NUMBER_=`10`, _PATTERN_=`https://www.some-site.com/images/img`, _PADDING_`=4` and _PAGES_=`11`.
+* Then after completion of first download, the program would run with _PATTERN_=`https://www.some-other-site.com/img`, _PADDING_=`3` and _PAGES_=`20`.
+* Then after completion of second download, the program would run with option **\-e**, with _URL_=`https://e-hentai.org/proceeding-long-url` and _PAGES_=`20`.
+
+So, you can simply give data without any options like usual, even from a file. The data for **\-l** and **\-e** can also be given in the usual way. This makes downloading multiple chapters easier.  
+The images from first data-set will be saved in a directory named as `RUN-1`, the images from second data-set in a directory named as `RUN-2` and so on.  
+But make sure you add the - before the options even in the file.
+
 **WARNING** : **-l** and **-e** cannot be used together. The first one provided will be considered.
 
 ## USAGE<a name="USAGE"></a>

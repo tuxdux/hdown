@@ -23,7 +23,7 @@ hdown is a downloading tool that uses \fBwget\fR(1) to download images from a do
 
 \fIPAGES\fR   \(em The number of pages to download \fBstarting from\fR the beginning page. Without the \fB\-p\fR, \fB\-l\fR or \fB\-e\fR options, the images are downloaded from page 1. So if you provide 10 for \fIPAGES\fR, the images will be downloaded till page 10.
 
-You will have to download (give links to the images for) each chapter manually.
+You will have to download (give links to the images for) each chapter manually (or you could store the data in a file and use the \fB\-f\fR option).
 
 \fBWARNING\fR : This program will not work if the website has the cloudflare DDoS protection turned on.
 
@@ -47,13 +47,67 @@ Download images from luscious.net. If this option is provided, the program, inst
 Download images from e-hentai.org. If this option is provided, the program, instead of the usual \fIPATTERN\fR and \fIPADDING\fR, asks for the \fIURL\fR to the first page (the page from where you want the download to start from). So, if you want to download pages 8\-10, you need to provide the \fIURL\fR to the 8th page and 3 for \fIPAGES\fR (8,9,10 \(em 3 pages). If you want the files named from 8 onwards as well, you \fBneed\fR to provide the \fB\-p\fR option.
 
 \fBNote that the \fIURL\fB is the actual URL to the page and not the URL to the image.\fR
+.TP
+\fB\-f\fR
+Read the required data from a file. If this option is provided, the program simply asks for the path to the file which has data stored in the following form (\fIFILE\fR is also taken via standard input with prompt) :
+
+OPTIONS
+.br
+DATA
+.br
+BLANK LINE
+.br
+OPTIONS
+.br
+DATA
+
+The only problem would be to maintain the order of data. First, custom file name (if using \fB\-n\fR), then custom page number (if using \fB\-p\fR) and then everything else, i.e, the usual order in which the program requests the data. So a perfect example of \fIFILE\fR would be :
+
+-np
+.br
+Test
+.br
+10
+.br
+https://www.some-site.com/images/img
+.br
+4
+.br
+11
+
+https://www.some-other-site.com/img
+.br
+3
+.br
+20
+
+-e
+.br
+https://e-hentai.org/proceeding-long-url
+.br
+20
+
+\[bu]
+This would run the program first for \fINAME\fR=Test, \fIPAGE-NUMBER\fR=10, \fIPATTERN\fR=https://www.some-site.com/images/img, \fIPADDING\fR=4 and \fIPAGES\fR=11.
+
+\[bu]
+Then after completion of first download, the program would run with \fIPATTERN\fR=https://www.some-other-site.com/img, \fIPADDING\fR=3 and \fIPAGES\fR=20.
+
+\[bu]
+Then after completion of second download, the program would run with option \fB\-e\fR, with \fIURL\fR=https://e-hentai.org/proceeding-long-url and \fIPAGES\fR=20.
+
+So, you can simply give data without any options like usual, even from a file. The data for \fB\-l\fR and \fB\-e\fR can also be given in the usual way. This makes downloading multiple chapters easier.
+.br
+The images from first data-set will be saved in a directory named as 'RUN-1', the images from second data-set in a directory named as 'RUN-2' and so on.
+.br
+But make sure you add the \- before the options even in the file.
 
 .TP
 \fBWARNING\fR : \fB\-l\fR and \fB\-e\fR cannot be used together. The first one provided will be considered.
 
 .SH USAGE
 .PP
-The various options can be combined, except for \fB\-l\fR and \fB\-e\fR together.
+The various options can be combined, except for \fB\-l\fR and \fB\-e\fR together, and \fB\-f\fR can only be used solo.
 
 .\" EXAMPLE 1
 \fBEXAMPLE 1\fR : Suppose you want to download 25 images starting from https://www.some-site.com/123456/img0003.jpg (this would mean downloading pages 3\-27) and you want the files named as Test.
