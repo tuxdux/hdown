@@ -78,16 +78,16 @@ print_usage () {
 }
 
 ehen () {
-	read -p "Enter url to the beginning page : " url
-	read -p "Enter number of pages : " pages
+	read -r -p "Enter url to the beginning page : " url
+	read -r -p "Enter number of pages : " pages
 	if ! [[ "$pages" =~ ^[0-9]+$ ]]
 	then
 		echo "[!] INVALID PAGES : $pages"
 		print_usage
 		exit 1
 	fi
-	pages=$(( $num + $pages ))
-	for (( i=$num; i<$pages; i++ ))
+	pages=$(( num + pages ))
+	for (( i=num; i<pages; i++ ))
 	do
 		echo -ne "\r${YELLOW}Downloading : Page $i${NOCOLOR}"
 		wget --quiet -O .page.html "$url"
@@ -106,16 +106,16 @@ ehen () {
 }
 
 luscious () {
-	read -p "Enter url to the beginning page : " url
-	read -p "Enter number of pages : " pages
+	read -r -p "Enter url to the beginning page : " url
+	read -r -p "Enter number of pages : " pages
 	if ! [[ "$pages" =~ ^[0-9]+$ ]]
 	then
 		echo "[!] INVALID PAGES : $pages"
 		print_usage
 		exit 1
 	fi
-	pages=$(( $num + $pages ))
-	for (( i=$num; i<$pages; i++ ))
+	pages=$(( num + pages ))
+	for (( i=num; i<pages; i++ ))
 	do
 		echo -ne "\r${YELLOW}Downloading : Page $i${NOCOLOR}"
 		wget --quiet -O .page.html "$url"
@@ -153,7 +153,7 @@ readfile () {
 		mkdir -p "RUN-$run"
 		cd "RUN-$run"
 		touch .text
-		if ! [[ "$line" =~ ^\-.*$ ]]
+		if ! [[ "$line" =~ ^-.*$ ]]
 		then
 			echo "$line" >> .text
 		fi
@@ -170,11 +170,11 @@ readfile () {
 			fi
 			echo "$nextline" >> .text
 		done
-		if [[ "$line" =~ ^\-.*$ ]]
+		if [[ "$line" =~ ^-.*$ ]]
 		then
-			cat .text | hdown "$line"
+			hdown "$line" < .text
 		else
-			cat .text | hdown
+			hdown < .text
 		fi
 		rm .text
 		run=$(( run + 1 ))
@@ -211,7 +211,7 @@ done
 
 if [ "$fset" = true ]
 then
-	read -p "Enter name of file to read from : " file
+	read -r -p "Enter name of file to read from : " file
 	if [[ "$file" =~ ^\~.*$ ]]
 	then
 		file=${file#\~}
@@ -232,12 +232,12 @@ fi
 
 if [ "$nset" = true ]
 then
-	read -p "Enter custom file name : " name
+	read -r -p "Enter custom file name : " name
 fi
 
 if [ "$pset" = true ]
 then
-	read -p "Enter page no. to start from : " num
+	read -r -p "Enter page no. to start from : " num
 	if ! [[ "$num" =~ ^[0-9]+$ ]]
 	then
 		echo "[!] INVALID PAGE NUMBER : $num"
@@ -257,9 +257,9 @@ then
 	exit 0
 fi
 
-read -p "Enter url pattern : " url
-read -p "Enter padding of index : " padding
-read -p "Enter number of pages : " pages
+read -r -p "Enter url pattern : " url
+read -r -p "Enter padding of index : " padding
+read -r -p "Enter number of pages : " pages
 
 # If the padding provided is not a single digit integer
 if ! [[ "$padding" =~ ^[0-9]$ ]]
@@ -280,8 +280,8 @@ fi
 padding="%0${padding}d"
 
 # Fix the pages
-pages=$(( $num + $pages ))
-for (( i=$num; i<$pages; i++ ))
+pages=$(( num + pages ))
+for (( i=num; i<pages; i++ ))
 do
 	echo -ne "\r${YELLOW}Downloading : Page $i${NOCOLOR}"
 	# This command pads zeroes before numbers to make them exactly of $padding characters
