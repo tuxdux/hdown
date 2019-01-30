@@ -107,8 +107,6 @@ ehen () {
 luscious () {
 	read -p "Enter url to the beginning page : " url
 	read -p "Enter number of pages : " pages
-	echo "$url"
-	echo "$pages"
 	if ! [[ "$pages" =~ ^[0-9]+$ ]]
 	then
 		echo "[!] INVALID PAGES : $pages"
@@ -143,6 +141,14 @@ readfile () {
 	run=1
 	while read -r line
 	do
+		# remove leading whitespace characters
+		line="${line#"${line%%[![:space:]]*}"}"
+		# remove trailing whitespace characters
+		line="${line%"${line##*[![:space:]]}"}"
+		if [ -z "$line" ]
+		then
+			continue
+		fi
 		mkdir -p "RUN-$run"
 		cd "RUN-$run"
 		touch .text
