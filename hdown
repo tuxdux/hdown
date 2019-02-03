@@ -43,7 +43,7 @@ print_usage () {
 	[#] [url]       : If the url to the images is https://www.some-site.com/images/123456/img0001.jpg
 	                  you will provide the part before the number (in this case, 0001), that is :
 	                  https://www.some-site.com/images/123456/img
-	                  [-] Notice that "hcdn" is also included.
+	                  [-] Notice that "img" is also included.
 	                  [-] If there is a slash before the number, you MUST include it.
 	[#] [padding]   : This is the number of characters in the index of image. See, in above example, 0001
 	                  there are 4 characters. So provide 4. The 11th image will have index 0011. If there
