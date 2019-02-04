@@ -1,6 +1,5 @@
 # hdown
 [![Build Status](https://travis-ci.org/tuxdux/hdown.svg?branch=master)](https://travis-ci.org/tuxdux/hdown)
-[![Coverage Status](https://coveralls.io/repos/github/tuxdux/hdown/badge.svg?branch=master)](https://coveralls.io/github/tuxdux/hdown?branch=master)
 
 ![Example](example.gif)
 
