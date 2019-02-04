@@ -1,0 +1,10 @@
+language : bash
+
+os :
+  - linux
+
+install :
+  - sudo ./install
+
+script :
+  - ./tests/tests

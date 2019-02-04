@@ -1,0 +1,27 @@
+#! /usr/bin/env bash
+cat <<- EOF > /tmp/tests.txt
+https://i.nhentai.net/galleries/665051/
+0
+5
+
+https://aa.hitomi.la/galleries/962820/RenaiSample_
+3
+5
+
+-np
+Test
+10
+https://static.hentaicdn.com/hentai/6016/1/p
+3
+5
+
+-l
+https://luscious.net/pictures/c/incest_manga/album/renai-sample_86874/sorted/oldest/id/5123312/@_pg1
+5
+
+-e
+https://e-hentai.org/s/82f914e7c8/1359148-1
+5
+EOF
+
+cd /tmp/ && echo "tests.txt" | hdown -f
