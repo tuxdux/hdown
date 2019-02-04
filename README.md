@@ -31,7 +31,7 @@ This is a small bash script. Nothing extraordinary.
 
 hdown is a downloading tool that uses **wget** to download images from a doujinshi site. This tool can also download images from any website that uses a certain pattern to store their images. It does not take any arguments since it reads all the required information via the standard input with prompts. (Providing a URL is easier that way and it does not get stored in the history.)
 
-If a site stores their images as : `https://www.some-site.com/images/img001.jpg`, and there are 25 images at the site, all you need to provide the program is the _PATTERN_, _PADDING_ and _PAGES_. Some examples of sites that store images in such format would be `hentai2read.com` and `nhentai.net`.
+If a site stores their images as : `https://www.some-site.com/images/img001.jpg`, and there are 25 images at the site, all you need to provide the program is the _PATTERN_, _PADDING_ and _PAGES_. Some examples of sites that store images in such format would be `hentai2read.com`, `nhentai.net` and `hitomi.la`.
 
 _PATTERN_ — The url till just where the number starts. In the above example, it would be `https://www.some-site.com/images/img`. If there is a slash before the number, you **must** include it in the pattern.
 
