@@ -8,8 +8,9 @@
 * [DESCRIPTION](#DESCRIPTION)  
 * [OPTIONS](#OPTIONS)  
 * [USAGE](#USAGE)  
-* [BUGS](#BUGS)  
 * [INSTALLING](#INSTALLING)  
+* [BUGS](#BUGS)  
+* [SITES](#SITES)
 * [MORE EXPLANATION](#MORE_EXPLANATION)  
 * [REQUIREMENTS](#REQUIREMENTS)  
 
@@ -177,11 +178,6 @@ Here, enter the _PAGES_ as explained in the **DESCRIPTION** section. `10` for th
 
 That is it. Now the images will be downloaded to the current directory.
 
-## BUGS<a name="BUGS"></a>
-
-* The program still creates empty files even if the download failed (this is a problem in **wget** actually).
-* The program gets stuck if the server does not respond. This is often encountered when downloading from `e-hentai.org`.
-
 ## INSTALLING<a name="INSTALLING"></a>
 To install, clone or download this repository and run the following command from the directory :
 ````
@@ -192,6 +188,21 @@ If you want to uninstall, use :
 ````
 $ sudo ./uninstall
 ````
+
+## BUGS<a name="BUGS"></a>
+
+* The program still creates empty files even if the download failed (this is a problem in **wget** actually).
+* The program gets stuck if the server does not respond. This is often encountered when downloading from `e-hentai.org`.
+
+## SITES<a name="SITES"></a>
+This is a small list of sites that **hdown** can download images from :
+SITE | SUPPORT
+---- | -------
+[nhentai.net](https://nhentai.net) | pattern-wise download
+[hentai2read.com](https://hentai2read.com) | pattern-wise download
+[hitomi.la](https://hitomi.la) | pattern-wise download
+[luscious.net](https://luscious.net) | option support
+[e-hentai.org](https://e-hentai.org) | option support
 
 ## MORE EXPLANATION<a name="MORE_EXPLANATION"></a>
 Suppose you want to download all of a doujinshi from `hentai2read.com`
