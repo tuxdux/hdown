@@ -211,7 +211,7 @@ done
 
 if [ "$fset" = true ]
 then
-	read -r -p "Enter name of file to read from : " file
+	read -r -p "Enter path for file to read from : " file
 	if [[ "$file" =~ ^\~.*$ ]]
 	then
 		file=${file#\~}

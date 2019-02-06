@@ -1,5 +1,6 @@
 # hdown
 [![Build Status](https://travis-ci.org/tuxdux/hdown.svg?branch=master)](https://travis-ci.org/tuxdux/hdown)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/tuxdux/hdown/blob/master/LICENSE)
 
 ![Example](example.gif)
 
