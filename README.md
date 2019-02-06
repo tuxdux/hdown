@@ -115,7 +115,7 @@ https://e-hentai.org/proceeding-long-url
 
 * Then after completion of second download, the program would run with option **-e**, with :    
 <ins>URL</ins> = `https://e-hentai.org/proceeding-long-url`    
-<ins>PAGES</ins>=`20`.
+<ins>PAGES</ins> = `20`.
 
 So, you can simply give data without any options like usual, even from a file. The data for **-l** and **-e** can also be given in the usual way. This makes downloading multiple chapters easier.  
 The images from first data-set will be saved in a directory named as `RUN-1`, the images from second data-set in a directory named as `RUN-2` and so on.  
@@ -214,6 +214,8 @@ SITE | SUPPORT
 [nhentai.net](https://nhentai.net) | pattern-wise download
 [hentai2read.com](https://hentai2read.com) | pattern-wise download
 [hitomi.la](https://hitomi.la) | pattern-wise download
+[pururin.io](https://pururin.io) | pattern-wise download
+[hentaihere.com](https://hentaihere.com) | pattern-wise download
 [luscious.net](https://luscious.net) | option support
 [e-hentai.org](https://e-hentai.org) | option support
 
