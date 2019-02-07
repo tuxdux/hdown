@@ -218,7 +218,7 @@ then
 		file="$HOME$file"
 	elif [[ "$file" =~ ^\..*$ ]]
 	then
-		file=${file$\.}
+		file=${file#\.}
 		file="$PWD$file"
 	fi
 	if ! [ -f "$file" ]
