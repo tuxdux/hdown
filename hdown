@@ -145,7 +145,8 @@ readfile () {
 	run=1
 	while read -r line
 	do
-		line=${line%%\;*}
+		# Remove anything after a semi-colon
+		line="${line%%\;*}"
 		# remove leading whitespace characters
 		line="${line#"${line%%[![:space:]]*}"}"
 		# remove trailing whitespace characters
@@ -164,6 +165,8 @@ readfile () {
 		while true
 		do
 			read -r nextline
+			# Remove anything after a semi-colon
+			nextline="${nextline%%\;*}"
 			# remove leading whitespace characters
 			nextline="${nextline#"${nextline%%[![:space:]]*}"}"
 			# remove trailing whitespace characters
