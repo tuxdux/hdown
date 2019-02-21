@@ -1,7 +1,8 @@
 #! /usr/bin/env bash
 cat <<- EOF > /tmp/tests.txt
+; This is a comment
 https://i.nhentai.net/galleries/665051/
-0
+0 ; This is another comment
 5
 
 https://aa.hitomi.la/galleries/962820/RenaiSample_
