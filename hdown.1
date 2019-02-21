@@ -1,7 +1,7 @@
 .\" Disable justification, align text to left only
 .ad l
 .\" ------------------------------------------------------
-.TH "HDOWN" "1" "January 7th 2019" "" "HDOWN"
+.TH "HDOWN" "1" "January 7th 2019" "v0.3.0" "HDOWN"
 .\" ------------------------------------------------------
 
 .SH NAME
@@ -51,7 +51,9 @@ Download images from e-hentai.org. If this option is provided, the program, inst
 \fB\-f\fR
 Read the required data from a file. If this option is provided, the program simply asks for the path to the file which has data stored in the following form (\fIFILE\fR is also taken via standard input with prompt) :
 
-OPTIONS
+; Comment
+.br
+OPTIONS ; Another comment
 .br
 DATA
 .br
@@ -63,6 +65,8 @@ DATA
 
 The only problem would be to maintain the order of data. First, custom file name (if using \fB\-n\fR), then custom page number (if using \fB\-p\fR) and then everything else, i.e, the usual order in which the program requests the data. So a perfect example of \fIFILE\fR would be :
 
+; Comment
+.br
 -np
 .br
 Test
@@ -101,6 +105,8 @@ So, you can simply give data without any options like usual, even from a file. T
 The images from first data-set will be saved in a directory named as 'RUN-1', the images from second data-set in a directory named as 'RUN-2' and so on.
 .br
 But make sure you add the \- before the options even in the file.
+
+\fBAnything after a semi\-colon will be ignored.\fR
 
 .TP
 \fBWARNING\fR : \fB\-l\fR and \fB\-e\fR cannot be used together. The first one provided will be considered.

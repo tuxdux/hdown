@@ -2,7 +2,11 @@
 [![Build Status](https://travis-ci.org/tuxdux/hdown.svg?branch=master)](https://travis-ci.org/tuxdux/hdown)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/tuxdux/hdown/blob/master/LICENSE)
 
-![Example](example.gif)
+<p align="center">
+<img src="example.gif">
+</p>
+
+## TABLE OF CONTENTS
 
 * [NAME](#NAME)  
 * [SYNOPSIS](#SYNOPSIS)  
@@ -77,7 +81,8 @@ Download images from `e-hentai.org`. If this option is provided, the program, in
 
 Read the required data from a file. If this option is provided, the program simply asks for the path to the file which has data stored in the following form (<ins>FILE</ins> is also taken via standard input with prompt) :
 ````
-OPTIONS
+; Comment
+OPTIONS ; Another Comment
 DATA
 BLANK LINE
 OPTIONS
@@ -86,6 +91,7 @@ DATA
 
 The only problem would be to maintain the order of data. First, custom file name (if using **-n**), then custom page number (if using **-p**) and then everything else, i.e, the usual order in which the program requests the data. So a perfect example of <ins>FILE</ins> would be :
 ````
+; Comment
 -np
 Test
 10
@@ -121,6 +127,8 @@ https://e-hentai.org/proceeding-long-url
 So, you can simply give data without any options like usual, even from a file. The data for **-l** and **-e** can also be given in the usual way. This makes downloading multiple chapters easier.  
 The images from first data-set will be saved in a directory named as `RUN-1`, the images from second data-set in a directory named as `RUN-2` and so on.  
 But make sure you add the - before the options even in the file.
+
+**Anything after a semi-colon will be ignored.**
 
 **WARNING** : **-l** and **-e** cannot be used together. The first one provided will be considered.
 

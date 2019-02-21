@@ -4,6 +4,7 @@
 YELLOW='\033[0;33m'
 GREEN='\033[0;32m'
 NOCOLOR='\033[0m'
+DELETE='\033[2K'
 
 stop () {
 	cd "$INITIALDIR"
@@ -71,6 +72,8 @@ print_usage () {
 	                  BLANK LINE
 	                  OPTIONS
 	                  DATA
+	                  Comments can be added by using semi-colons. Anything after a semi-colon will be
+	                  ignored.
 	------------------------------------------------------------------------------------------------------
 	WARNING         : -l and -e cannot be used together. The first one provided will be considered.
 	------------------------------------------------------------------------------------------------------
@@ -89,7 +92,7 @@ ehen () {
 	pages=$(( num + pages ))
 	for (( i=num; i<pages; i++ ))
 	do
-		echo -ne "\r${YELLOW}Downloading : Page $i${NOCOLOR}"
+		echo -ne "${DELETE}\r${YELLOW}Downloading : Page $i/$((pages-1))${NOCOLOR}"
 		wget --quiet -O .page.html "$url"
 		image=$(grep -oE "id=\"img\"\ssrc=\S*" .page.html | grep -oE "http:\S*")
 		url=$(grep -oE '<a\sid="next"\s\S*\s\S*\s\S*\s\S*>' .page.html | head -1 | grep -oE "https.*\"")
@@ -117,7 +120,7 @@ luscious () {
 	pages=$(( num + pages ))
 	for (( i=num; i<pages; i++ ))
 	do
-		echo -ne "\r${YELLOW}Downloading : Page $i${NOCOLOR}"
+		echo -ne "${DELETE}\r${YELLOW}Downloading : Page $i/$((pages-1))${NOCOLOR}"
 		wget --quiet -O .page.html "$url"
 		image=$(grep -i "\"icon-download\"" .page.html | grep -oE "http.*\.(jpg|png)")
 		ext=${image##*\.}
@@ -142,6 +145,7 @@ readfile () {
 	run=1
 	while read -r line
 	do
+		line=${line%%\;*}
 		# remove leading whitespace characters
 		line="${line#"${line%%[![:space:]]*}"}"
 		# remove trailing whitespace characters
@@ -283,7 +287,7 @@ padding="%0${padding}d"
 pages=$(( num + pages ))
 for (( i=num; i<pages; i++ ))
 do
-	echo -ne "\r${YELLOW}Downloading : Page $i${NOCOLOR}"
+	echo -ne "${DELETE}\r${YELLOW}Downloading : Page $i/$((pages-1))${NOCOLOR}"
 	# This command pads zeroes before numbers to make them exactly of $padding characters
 	# Read : https://stackoverflow.com/a/8789815
 	printf -v page "$padding" $i
@@ -305,4 +309,4 @@ do
 	fi
 	rm -f .wget.out
 done
-echo -e "\r${GREEN}[#] Download complete!${NOCOLOR}"
+echo -e "${DELETE}\r${GREEN}[#] Download complete!${NOCOLOR}"
