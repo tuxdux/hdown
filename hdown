@@ -105,7 +105,7 @@ ehen () {
 		fi
 	done
 	rm -f .page.html
-	echo -e "\r${GREEN}[#] Download complete!${NOCOLOR}"
+	echo -e "${DELETE}\r${GREEN}[#] Download complete!${NOCOLOR}"
 }
 
 luscious () {
@@ -138,7 +138,7 @@ luscious () {
 		url="https://luscious.net/$url"
 	done
 	rm -f .page.html
-	echo -e "\r${GREEN}[#] Download complete!${NOCOLOR}"
+	echo -e "${DELETE}\r${GREEN}[#] Download complete!${NOCOLOR}"
 }
 
 readfile () {
